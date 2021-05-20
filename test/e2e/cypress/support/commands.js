@@ -269,8 +269,8 @@ Cypress.Commands.add('login', ({ email, password, expectSession = true }) => {
     followRedirect: false,
     failOnStatusCode: false,
     headers: {
-      'Accept': 'application/json'
-    },
+      Accept: 'application/json'
+    }
   })
     .then(({ body, status }) => {
       expect(status).to.eq(200)
@@ -283,14 +283,14 @@ Cypress.Commands.add('login', ({ email, password, expectSession = true }) => {
           method: 'password'
         }),
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json'
         },
         url: form.action,
         followRedirect: false,
         failOnStatusCode: false
       })
     })
-    .then(({status}) => {
+    .then(({ status }) => {
       console.log('Login sequence completed: ', { email, password })
       if (expectSession) {
         expect(status).to.eq(200)
