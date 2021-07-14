@@ -459,3 +459,8 @@ To prepare documentation tests, run `npm i` to install
 
 - test all documentation: <code type="make/command">make test-docs</code>
 - test an individual file: <code type="npm/installed-executable">text-run</code>
+
+
+#### Build Image For Environments
+ 1. make deploy/kratos.{env}.yml
+ 2. add .github/workflows/deploy-{env}.yml
