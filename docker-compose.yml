@@ -25,7 +25,7 @@ services:
       - KRATOS_PUBLIC_URL=http://kratos:4433/
       - KRATOS_ADMIN_URL=http://kratos:4434/
       - SECURITY_MODE=standalone
-      - KRATOS_BROWSER_URL=https://kratos.ofshu.com/
+      - KRATOS_BROWSER_URL=https://kratos.upbond.io/
     ports:
       - "4455:4455"
     networks:
