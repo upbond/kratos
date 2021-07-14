@@ -12,6 +12,7 @@ services:
       - "5555:5555" # Port for hydra token user
     restart: on-failure
     environment:
+        - DSN=mysql://root@tcp(docker.for.mac.localhost:3306)/hydra?parseTime=true
         - SERVE_COOKIES_SAME_SITE_LEGACY_WORKAROUND=false
         - SERVE_COOKIES_SAME_SITE_MODE=None
         - OAUTH2_PKCE_ENFORCED=false
@@ -37,6 +38,8 @@ services:
       - "4433:4433" # public
       - "4434:4434" # admin
     restart: unless-stopped
+    environment:
+      - DSN=mysql://root@tcp(docker.for.mac.localhost:3306)/kratos?parseTime=true
     networks:
       - intranet
 

@@ -16,7 +16,7 @@ RUN go mod download
 
 ADD . .
 
-RUN go build -tags sqlite -o /usr/bin/kratos
+RUN go build -o /usr/bin/kratos
 
 FROM alpine:3.12
 
@@ -26,13 +26,8 @@ RUN addgroup -S ory; \
 
 COPY --from=builder /usr/bin/kratos /usr/bin/kratos
 
-# By creating the sqlite folder as the ory user, the mounted volume will be owned by ory:ory, which
-# is required for read/write of SQLite.
-RUN mkdir -p /var/lib/sqlite
-RUN chown ory:ory /var/lib/sqlite
-VOLUME /var/lib/sqlite
-
 ARG profile="dev"
+
 # Exposing the ory home directory to simplify passing in Kratos configuration (e.g. if the file $HOME/.kratos.yaml
 # exists, it will be automatically used as the configuration file).
 VOLUME /home/ory

@@ -1,6 +1,6 @@
 version: v0.4.6-alpha.1
 
-dsn: "mysql://root@tcp(docker.for.mac.localhost:3306)/kratos?parseTime=true"
+# dsn: "mysql://root@tcp(docker.for.mac.localhost:3306)/kratos?parseTime=true"
 
 serve:
   public:
