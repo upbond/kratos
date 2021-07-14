@@ -1,0 +1,105 @@
+version: v0.4.6-alpha.1
+
+dsn: "mysql://root@tcp(docker.for.mac.localhost:3306)/kratos?parseTime=true"
+
+serve:
+  public:
+    base_url: http://0.0.0.0:4433/
+    cors:
+      enabled: true
+  admin:
+    base_url: http://0.0.0.0:4434/
+
+selfservice:
+  default_browser_return_url: http://0.0.0.0:4455/
+  whitelisted_return_urls:
+    - http://0.0.0.0:4455
+
+  methods:
+    password:
+      enabled: true
+    oidc:
+      config:
+        ## OpenID Connect and OAuth2 Providers ##
+        #
+        # A list and configuration of OAuth2 and OpenID Connect providers Ory Kratos should integrate with.
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SELFSERVICE_METHODS_OIDC_CONFIG_PROVIDERS=<value>
+        # - Windows Command Line (CMD):
+        #    > set SELFSERVICE_METHODS_OIDC_CONFIG_PROVIDERS=<value>
+        #
+        providers:
+          - id: line
+            provider: line
+            client_id: 'xxxxxxx'
+            client_secret: 'yyyyyyyyyyyy'
+            mapper_url: file://home/ory/identity.schema.json
+            issuer_url: https://access.line.me
+            auth_url: https://access.line.me/oauth2/v2.1/authorize
+            token_url: https://api.line.me/oauth2/v2.1/token
+            scope:
+              - profile:openid:email
+      enabled: true
+
+  flows:
+    error:
+      ui_url: http://0.0.0.0:4455/error
+
+    settings:
+      ui_url: http://0.0.0.0:4455/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: http://0.0.0.0:4455/recovery
+
+    verification:
+      enabled: true
+      ui_url: http://0.0.0.0:4455/verify
+      after:
+        default_browser_return_url: http://0.0.0.0:4455/
+
+    logout:
+      after:
+        default_browser_return_url: http://0.0.0.0:4455/auth/login
+
+    login:
+      ui_url: http://0.0.0.0:4455/auth/login
+      lifespan: 10m
+
+    registration:
+      lifespan: 10m
+      ui_url: http://0.0.0.0:4455/auth/registration
+      after:
+        password:
+          hooks:
+            - hook: session
+        oidc:
+          hooks:
+            - hook: session
+
+log:
+  level: debug
+  format: json
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 128MB
+    iterations: 2
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file://home/ory/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true

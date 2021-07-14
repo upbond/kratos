@@ -1,0 +1,116 @@
+version: v0.4.6-alpha.1
+
+dsn: "mysql://admin:Wdxewsm37GBpAHg1MGGC@tcp(upbond-ciam-poc.cy5wxwv196bs.ap-northeast-1.rds.amazonaws.com:3306)/kratos?max_conns=20&max_idle_conns=4"
+
+serve:
+  public:
+    base_url: https://kratos.upbond.io/
+    cors:
+      enabled: true
+  admin:
+    base_url: https://admin.kratos.upbond.io/
+
+selfservice:
+  default_browser_return_url: https://kratos-ui.upbond.io/
+  whitelisted_return_urls:
+    - https://kratos-ui.upbond.io
+    - http://kratos-ui.upbond.io/auth/hydra/login
+
+  methods:
+    password:
+      enabled: true
+    oidc:
+      config:
+        ## OpenID Connect and OAuth2 Providers ##
+        #
+        # A list and configuration of OAuth2 and OpenID Connect providers Ory Kratos should integrate with.
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SELFSERVICE_METHODS_OIDC_CONFIG_PROVIDERS=<value>
+        # - Windows Command Line (CMD):
+        #    > set SELFSERVICE_METHODS_OIDC_CONFIG_PROVIDERS=<value>
+        #
+        providers:
+          - id: line
+            provider: line
+            client_id: 'xxxxxx'
+            client_secret: 'xxxxxxx'
+            mapper_url: file://home/ory/identity.schema.json
+            issuer_url: https://access.line.me
+            auth_url: https://access.line.me/oauth2/v2.1/authorize
+            token_url: https://api.line.me/oauth2/v2.1/token
+            scope:
+              - profile:openid:email
+          - id: github # this is `<provider-id>` in the Authorization callback URL. DO NOT CHANGE IT ONCE SET!
+            provider: github
+            client_id: 'xxxxxxxx' # Replace this with the OAuth2 Client ID provided by GitHub
+            client_secret: 'xxxxxxxxx' # Replace this with the OAuth2 Client Secret provided by GitHub
+            mapper_url: file://contrib/quickstart/kratos/oidc/oidc.github.jsonnet
+            scope:
+              - user:email
+      enabled: true
+
+  flows:
+    error:
+      ui_url: https://kratos-ui.upbond.io/error
+
+    settings:
+      ui_url: https://kratos-ui.upbond.io/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: https://kratos-ui.upbond.io/recovery
+
+    verification:
+      enabled: true
+      ui_url: https://kratos-ui.upbond.io/verify
+      after:
+        default_browser_return_url: https://kratos-ui.upbond.io/
+
+    logout:
+      after:
+        default_browser_return_url: https://kratos-ui.upbond.io/auth/login
+
+    login:
+      ui_url: https://kratos-ui.upbond.io/auth/login
+      lifespan: 10m
+
+    registration:
+      lifespan: 10m
+      ui_url: https://kratos-ui.upbond.io/auth/registration
+      after:
+        password:
+          hooks:
+            - hook: session
+        oidc:
+          hooks:
+            - hook: session
+session:
+  cookie:
+    domain: ofshu.com
+    path: /
+log:
+  level: debug
+  format: json
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 128MB
+    iterations: 2
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file://home/ory/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true

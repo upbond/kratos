@@ -1,0 +1,44 @@
+# This docker-compose file sets up ORY Kratos, ORY Hydra, and this app in a network and configures
+# in such a way that ORY Kratos is the Login Provider for ORY Hydra.
+
+version: '3.7'
+
+services:
+  hydra:
+    image: hydra
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port
+      - "5555:5555" # Port for hydra token user
+    restart: on-failure
+    environment:
+        - SERVE_COOKIES_SAME_SITE_LEGACY_WORKAROUND=false
+        - SERVE_COOKIES_SAME_SITE_MODE=None
+        - OAUTH2_PKCE_ENFORCED=false
+    networks:
+      - intranet
+
+  kratos-selfservice-ui-node:
+    image: ui
+    environment:
+      - HYDRA_ADMIN_URL=http://hydra:4445
+      - KRATOS_PUBLIC_URL=http://kratos:4433/
+      - KRATOS_ADMIN_URL=http://kratos:4434/
+      - SECURITY_MODE=standalone
+      - KRATOS_BROWSER_URL=https://kratos.ofshu.com/
+    ports:
+      - "4455:4455"
+    networks:
+      - intranet
+
+  kratos:
+    image: kratos
+    ports:
+      - "4433:4433" # public
+      - "4434:4434" # admin
+    restart: unless-stopped
+    networks:
+      - intranet
+
+networks:
+  intranet:

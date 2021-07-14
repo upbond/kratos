@@ -268,7 +268,8 @@
             "microsoft",
             "discord",
             "slack",
-            "facebook"
+            "facebook",
+            "line"
           ],
           "examples": [
             "google"
