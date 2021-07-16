@@ -4,17 +4,17 @@ version: v0.4.6-alpha.1
 
 serve:
   public:
-    base_url: https://kratos.upbond.io/
+    base_url: https://public.poc.upbond.io/
     cors:
       enabled: true
   admin:
-    base_url: https://admin.kratos.upbond.io/
+    base_url: https://admin.poc.upbond.io/
 
 selfservice:
-  default_browser_return_url: https://kratos-ui.upbond.io/
+  default_browser_return_url: https://browser.upbond.io/
   whitelisted_return_urls:
-    - https://kratos-ui.upbond.io
-    - http://kratos-ui.upbond.io/auth/hydra/login
+    - https://browser.upbond.io
+    - http://browser.upbond.io/auth/hydra/login
 
   methods:
     password:
@@ -53,33 +53,33 @@ selfservice:
 
   flows:
     error:
-      ui_url: https://kratos-ui.upbond.io/error
+      ui_url: https://browser.upbond.io/error
 
     settings:
-      ui_url: https://kratos-ui.upbond.io/settings
+      ui_url: https://browser.upbond.io/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: https://kratos-ui.upbond.io/recovery
+      ui_url: https://browser.upbond.io/recovery
 
     verification:
       enabled: true
-      ui_url: https://kratos-ui.upbond.io/verify
+      ui_url: https://browser.upbond.io/verify
       after:
-        default_browser_return_url: https://kratos-ui.upbond.io/
+        default_browser_return_url: https://browser.upbond.io/
 
     logout:
       after:
-        default_browser_return_url: https://kratos-ui.upbond.io/auth/login
+        default_browser_return_url: https://browser.upbond.io/auth/login
 
     login:
-      ui_url: https://kratos-ui.upbond.io/auth/login
+      ui_url: https://browser.upbond.io/auth/login
       lifespan: 10m
 
     registration:
       lifespan: 10m
-      ui_url: https://kratos-ui.upbond.io/auth/registration
+      ui_url: https://browser.upbond.io/auth/registration
       after:
         password:
           hooks:
