@@ -13,9 +13,9 @@ services:
     restart: on-failure
     environment:
         - DSN=mysql://root@tcp(docker.for.mac.localhost:3306)/hydra?parseTime=true
-        - SERVE_COOKIES_SAME_SITE_LEGACY_WORKAROUND=false
-        - SERVE_COOKIES_SAME_SITE_MODE=None
-        - OAUTH2_PKCE_ENFORCED=false
+        # - SERVE_COOKIES_SAME_SITE_LEGACY_WORKAROUND=false
+        # - SERVE_COOKIES_SAME_SITE_MODE=None
+        # - OAUTH2_PKCE_ENFORCED=false
     networks:
       - intranet
 

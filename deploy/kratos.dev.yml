@@ -89,7 +89,7 @@ selfservice:
             - hook: session
 session:
   cookie:
-    domain: ofshu.com
+    domain: poc.upbond.io
     path: /
 log:
   level: debug
